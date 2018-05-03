@@ -1,11 +1,13 @@
 package com.extendus.lamdautils;
 
-import com.extendus.lamdautils.function.ThrowFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Either<T> {
 
@@ -18,12 +20,12 @@ public class Either<T> {
     private Boolean performAccepted = Boolean.FALSE;
     private Boolean elseAccepted = Boolean.FALSE;
 
-    private Either(final T value) {
+    public Either(final T value) {
         this.value = value;
         this.predicateValue = predicate.test(value);
     }
 
-    public static <T> Either<T> of(T value) {
+    public static <T> Either<T> eitherOf(T value) {
         return new Either(value);
     }
 
@@ -128,7 +130,7 @@ public class Either<T> {
      *
      * @param exceptionFunction
      */
-    public Either<T> orElseThrow(Function<T, Supplier<RuntimeException>> exceptionFunction) throws RuntimeException {
+    public Either<T> orElseThrow(Function<T, Supplier<? extends RuntimeException>> exceptionFunction) throws RuntimeException {
         if (!this.predicateValue && !performAccepted) {
             elseAccepted = Boolean.TRUE;
             throw exceptionFunction.apply(value).get();

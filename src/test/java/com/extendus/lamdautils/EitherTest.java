@@ -26,7 +26,7 @@ public class EitherTest {
         Predicate<String> hasLastName = s -> s.endsWith("Mule");
         Function<String, String> addLastName = s -> s + " Mule";
 
-        final String o = Either.of(value)
+        final String o = Either.eitherOf(value)
                 .condition(hasLastName.negate())
                 .perform(addLastName)
                 .get();
@@ -41,7 +41,7 @@ public class EitherTest {
         Predicate<Integer> isMoreThanTen = s -> s > 10;
         Function<Integer, Integer> sumTen = s -> s + 10;
 
-        final Integer o = Either.of(value)
+        final Integer o = Either.eitherOf(value)
                 .condition(isMoreThanTen)
                 .perform(sumTen)
                 .get();
@@ -59,7 +59,7 @@ public class EitherTest {
             return p;
         };
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .perform(addLastName)
                 .get();
 
@@ -79,7 +79,7 @@ public class EitherTest {
             return new Person("Rafael");
         };
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .perform(addLastName)
                 .orElse(createNew)
                 .get();
@@ -97,7 +97,7 @@ public class EitherTest {
             return p;
         };
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .condition(hasLastName.negate())
                 .perform(addLastName)
                 .get();
@@ -120,7 +120,7 @@ public class EitherTest {
             return p;
         };
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .condition(hasLastName)
                 .perform(addLastName)
                 .orElse(addMiddleName)
@@ -140,7 +140,7 @@ public class EitherTest {
 
         Predicate<Person> hasLastName = p -> p.getName().endsWith("Mule");
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .condition(hasLastName)
                 .orElseThrow(illegalStateException)
                 .get();
@@ -152,12 +152,12 @@ public class EitherTest {
         exception.expectMessage("Error Rafael");
 
         Person person = new Person("Rafael");
-        Function<Person, Supplier<RuntimeException>> exceptionFunc = person1 ->
+        Function<Person, Supplier<? extends RuntimeException>> exceptionFunc = person1 ->
                 () -> new IllegalStateException("Error " + person1.getName());
 
         Predicate<Person> hasLastName = p -> p.getName().endsWith("Mule");
 
-        final Person o = Either.of(person)
+        final Person o = Either.eitherOf(person)
                 .condition(hasLastName)
                 .orElseThrow(exceptionFunc)
                 .get();
