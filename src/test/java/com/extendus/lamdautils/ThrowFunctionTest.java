@@ -1,12 +1,12 @@
 package com.extendus.lamdautils;
 
 import com.extendus.lamdautils.function.ThrowFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
@@ -40,8 +40,6 @@ public class ThrowFunctionTest {
         ThrowFunction<String> throwIllegalStateException = m -> {
             throw illegalArgumentException.apply(m);
         };
-
-        Function<String, ThrowFunction> ef = s -> 
 
         throwIllegalStateException.lob("this is an exception");
     }
