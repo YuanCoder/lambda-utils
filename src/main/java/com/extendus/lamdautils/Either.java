@@ -74,6 +74,32 @@ public class Either<T> {
     }
 
     /**
+     * Throws a {@code Supplier<? extends RuntimeException>} with the specified present null or false value.
+     *
+     * @param exceptionSupplier
+     */
+    public Either<T> performThrow(Supplier<? extends RuntimeException> exceptionSupplier) throws RuntimeException {
+        if (this.predicateValue && !elseAccepted) {
+            performAccepted = Boolean.TRUE;
+            throw exceptionSupplier.get();
+        }
+        return this;
+    }
+
+    /**
+     * Throws a {@code Supplier<? extends RuntimeException>} with the specified present null or false value.
+     *
+     * @param exceptionFunction
+     */
+    public Either<T> performThrow(Function<T, Supplier<? extends RuntimeException>> exceptionFunction) throws RuntimeException {
+        if (this.predicateValue && !elseAccepted) {
+            performAccepted = Boolean.TRUE;
+            throw exceptionFunction.apply(value).get();
+        }
+        return this;
+    }
+
+    /**
      * Accepts a {@code Consumer} with the specified present null or false value.
      *
      * @param consumer
